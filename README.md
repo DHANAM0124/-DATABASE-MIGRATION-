@@ -39,3 +39,5 @@ Sample data in both systems is identical.
 In the given dataset, an integrity issue was discovered: one order (OrderID 104) had a CustomerID (5) that didn’t exist in the Customers table. PostgreSQL would reject this unless foreign key checks are disabled or the data is cleaned beforehand.
 
 <!-- Uploading "Screenshot 2025-08-08 094737.png"... -->
+
+<!-- Uploading "Screenshot 2025-08-08 094737.png"... -->
