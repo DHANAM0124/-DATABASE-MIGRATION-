@@ -1,0 +1,44 @@
+🔹 Step 1: Export MySQL Data
+mysqldump -u root -p example_db Customers Orders --tab=/tmp --fields-terminated-by=',' --fields-enclosed-by='"' --lines-terminated-by='\n'
+
+🔹 Step 2: Create Tables in PostgreSQL
+-- PostgreSQL script to recreate the schema
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    City VARCHAR(100)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    Product VARCHAR(100),
+    Quantity INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+🔹 Step 3: Import Data into PostgreSQL
+-- Load data into PostgreSQL
+COPY Customers(CustomerID, Name, City)
+FROM '/path/to/Customers.txt'
+WITH (FORMAT csv, HEADER false, DELIMITER ',', QUOTE '"');
+
+COPY Orders(OrderID, CustomerID, Product, Quantity)
+FROM '/path/to/Orders.txt'
+WITH (FORMAT csv, HEADER false, DELIMITER ',', QUOTE '"');
+
+✅ Data Integrity Checks Performed:
+Row count match:
+
+-- Run in both MySQL and PostgreSQL
+SELECT COUNT(*) FROM Customers;
+SELECT COUNT(*) FROM Orders;
+Foreign key validation:
+
+-- Should return 0
+SELECT * FROM Orders WHERE CustomerID NOT IN (SELECT CustomerID FROM Customers);
+Sample data match:
+
+Compared a few rows manually or using scripts to ensure data consistency.
+
+
